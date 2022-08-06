@@ -3,7 +3,7 @@
 #  It should be named 'Kbuild'.
 #
 
-EXTRA_CFLAGS+= -DRASPBERRYPI
+ccflags-y += -DRASPBERRYPI
 
 obj-m	:= klcd.o
  
