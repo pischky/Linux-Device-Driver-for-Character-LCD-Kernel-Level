@@ -1,26 +1,59 @@
 #
-# 	A Makefile to cross-compile a kernel module
-#
-#	(from a Ubuntu PC to a Beaglebone Black ARM target board)
+#  Makefile to build external module "klcd" on Raspberry Pi.
+#  It should be named 'Makefile'.
 #
 
-obj-m	:= klcd.o
- 
-KDIR	:= /root/bb-kernel/KERNEL
-PWD	:= $(shell pwd) 
- 
+ifneq ($(KERNELRELEASE),)
+
+# kbuild part of makefile -----------------------------
+
+include Kbuild
+
+else
+
+# normal makefile -------------------------------------
+
+KDIR ?= /lib/modules/`uname -r`/build
+PWD := `pwd`
+
+#
+# Forward targets to KBuild
+#
+
 default:
-	$(MAKE) ARCH:=arm CROSS_COMPILE:=/root/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/arm-linux-gnueabihf- \
-	-C $(KDIR) M=$(PWD) modules 
+	$(MAKE) -C $(KDIR) M=$$PWD
 
-clean:	
-	$(MAKE) -C $(KDIR) M=$(PWD) clean
-	rm -rf *.ko
-	rm -rf *.mod.*
-	rm -rf .*.cmd
-	rm -rf *.o
-	rm -rf *.order
-	rm -rf *.symvers
-	rm -rf *.c~
-	rm -rf *.h~
-	
+modules:
+	$(MAKE) -C $(KDIR) M=$$PWD modules
+
+modules_install:
+	$(MAKE) -C $(KDIR) M=$$PWD modules_install
+
+clean:
+	$(MAKE) -C $(KDIR) M=$$PWD clean
+
+help:
+	$(MAKE) -C $(KDIR) M=$$PWD help
+
+#
+# Module specific targets
+#
+
+install: modules
+	@echo "-- copy 'klcd.ko' to '/lib/modules/`uname -r`/extra/' and run depmod --"
+	sudo -E make modules_install
+
+insmod: install
+	@echo "-- load module with 'insmod klcd.ko' --"
+	sudo insmod klcd.ko
+	sudo chmod a+w /dev/klcd
+
+rmmod: install
+	@echo "-- unload module with 'rmmod klcd.ko' --"
+	sudo rmmod klcd.ko
+
+.PHONY: clean help install insmod rmmod
+
+# -----------------------------------------------------
+
+endif
