@@ -1,6 +1,15 @@
 Linux-Device-Driver-for-Character-LCD-Kernel-Level
 ==================================================
 
+RaspberryPi version
+-------------------
+
+Tested on Raspberry Pi OS 5.15 (bullseye) (5.15.32-v8+)
+on a Raspberry Pi 4 Model B. Display used: Electronic Assembly W162-N3LW. 
+
+Original
+--------
+
 a kernel level Linux Device Driver for a 16x2 character LCD (with HD44780 LCD controller) with 4 bit mode.
 
 	A demo video is available here: https://www.youtube.com/watch?v=icP9ckrTLKc
