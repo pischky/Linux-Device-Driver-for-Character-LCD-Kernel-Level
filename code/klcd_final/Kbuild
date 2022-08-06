@@ -1,0 +1,9 @@
+#
+#  A KBuild file to build external module "klcd" for Raspberry Pi.
+#  It should be named 'Kbuild'.
+#
+
+EXTRA_CFLAGS+= -DRASPBERRYPI
+
+obj-m	:= klcd.o
+ 
