@@ -19,14 +19,31 @@
 
 // ******** LCD Pin Configuration *****************************************************************
 
-#define LCD_RS_PIN_NUMBER	67  // LCD_RS: P8_8  (GPIO pin 67)
-#define LCD_E_PIN_NUMBER	68  // LCD_E:  P8_10 (GPIO pin 68)
+#if defined(RASPBERRYPI)
 
-#define LCD_DB4_PIN_NUMBER	65  // LCD_DB4: P8_18 (GPIO pin 65)
-#define LCD_DB5_PIN_NUMBER	46  // LCD_DB5: P8_16 (GPIO pin 46)
-#define LCD_DB6_PIN_NUMBER	26  // LCD_DB6: P8_14 (GPIO pin 26)
-#define LCD_DB7_PIN_NUMBER	44  // LCD_DB7: P8_12 (GPIO pin 44)
+  // see https://learn.sparkfun.com/tutorials/raspberry-gpio/gpio-pinout
 
+  #define LCD_RS_PIN_NUMBER     4  // LCD_RS: (GPIO#4,  header pin 7)
+  #define LCD_E_PIN_NUMBER      17 // LCD_E:  (GPIO#17, header pin 11)
+
+  #define LCD_DB4_PIN_NUMBER    18 // LCD_DB4: (GPIO#18, header pin 12)
+  #define LCD_DB5_PIN_NUMBER    22 // LCD_DB5: (GPIO#22, header pin 15)
+  #define LCD_DB6_PIN_NUMBER    23 // LCD_DB6: (GPIO#23, header pin 16)
+  #define LCD_DB7_PIN_NUMBER    24 // LCD_DB7: (GPIO#24, header pin 18)
+
+#elif defined(BEAGLEBONE)
+
+  #define LCD_RS_PIN_NUMBER	67  // LCD_RS: P8_8  (GPIO pin 67)
+  #define LCD_E_PIN_NUMBER	68  // LCD_E:  P8_10 (GPIO pin 68)
+
+  #define LCD_DB4_PIN_NUMBER	65  // LCD_DB4: P8_18 (GPIO pin 65)
+  #define LCD_DB5_PIN_NUMBER	46  // LCD_DB5: P8_16 (GPIO pin 46)
+  #define LCD_DB6_PIN_NUMBER	26  // LCD_DB6: P8_14 (GPIO pin 26)
+  #define LCD_DB7_PIN_NUMBER	44  // LCD_DB7: P8_12 (GPIO pin 44)
+
+#else
+  #error "no pin configuration defined. Use -DRASPBERRYPI for excampe."
+#endif
 
 // ******** LCD Constants ************************************************************************
 
