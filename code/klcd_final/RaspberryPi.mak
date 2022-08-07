@@ -15,6 +15,8 @@ else
 
 KDIR ?= /lib/modules/`uname -r`/build
 PWD := `pwd`
+KERNELRELEASE ?= $(shell uname -r)
+TEMP_FILE := $(shell mktemp -u)
 
 #
 # Forward targets to KBuild
@@ -41,10 +43,18 @@ help:
 
 install: modules
 	@echo "-- copy 'klcd.ko' to '/lib/modules/`uname -r`/extra/' and run depmod --"
-	sudo -E make modules_install
+	sudo -E make modules_install 2>&1 | tee $(TEMP_FILE)
+	@if grep "Warning: modules_install: missing 'System.map' file. Skipping depmod." $(TEMP_FILE); \
+	then \
+	  echo "-- System.map missing. Running depmod manually. --"; \
+	  echo "/sbin/depmod -ae -E /lib/modules/$(KERNELRELEASE)/build/Module.symvers $(KERNELRELEASE)"; \
+	  sudo /sbin/depmod -ae -E /lib/modules/$(KERNELRELEASE)/build/Module.symvers $(KERNELRELEASE); \
+	fi
+	@if [ -f $(TEMP_FILE) ]; then sudo rm $(TEMP_FILE); fi 
+	# TODO: copy autorun file for systemd
 
 insmod: install
-	@echo "-- load module with 'insmod klcd.ko' --"
+	@echo "-- load module with 'insmod klcd.ko' and change access --"
 	sudo insmod klcd.ko
 	sudo chmod a+w /dev/klcd
 
