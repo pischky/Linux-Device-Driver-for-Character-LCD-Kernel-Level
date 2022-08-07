@@ -7,8 +7,34 @@ RaspberryPi version
 Tested on Raspberry Pi OS 5.15 (bullseye) (5.15.32-v8+)
 on a Raspberry Pi 4 Model B. Display used: Electronic Assembly W162-N3LW. 
 
-Original
---------
+To get this running do:
+````
+$ sudo apt-get update
+$ sudo apt-get full-upgrade
+$ sudo apt-get install git
+$ sudo apt-get install raspberrypi-kernel-headers
+$ mkdir klcd
+$ cd klcd
+$ git clone https://github.com/pischky/Linux-Device-Driver-for-Character-LCD-Kernel-Level.git
+$ cd Linux-Device-Driver-for-Character-LCD-Kernel-Level/code/klcd_final/
+$ make
+$ make install
+$ make insmod
+$ echo "Hello" >/dev/klcd
+````
+
+In current version the starting on boot is still missing. Files need to be copied /etc/systemd/ manually. 
+
+<b>Note:</b> The current Makefile makes heavy use of `sudo` not requesting a password. A better version would be
+to use two steps:
+
+````
+$ make
+$ sudo make install
+````
+
+Original Text
+-------------
 
 a kernel level Linux Device Driver for a 16x2 character LCD (with HD44780 LCD controller) with 4 bit mode.
 
