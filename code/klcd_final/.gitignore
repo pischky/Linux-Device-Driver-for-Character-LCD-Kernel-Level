@@ -1,0 +1,13 @@
+.Module.symvers.cmd
+.klcd.ko.cmd
+.klcd.mod.cmd
+.klcd.mod.o.cmd
+.klcd.o.cmd
+.modules.order.cmd
+Module.symvers
+klcd.ko
+klcd.mod
+klcd.mod.c
+klcd.mod.o
+klcd.o
+modules.order
