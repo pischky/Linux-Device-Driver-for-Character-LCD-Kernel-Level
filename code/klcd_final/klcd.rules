@@ -1,0 +1,8 @@
+# define rules for /dev/klcd
+
+# change permission to "a+rw" (0666)
+ACTION=="add", KERNEL=="klcd*", MODE="0666"
+
+# change group to "pi" and permission to "o+rw,g+rw" (0660)
+# ACTION=="add", KERNEL=="klcd*", GROUP="pi"
+

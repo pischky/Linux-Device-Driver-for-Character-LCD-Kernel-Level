@@ -18,20 +18,14 @@ $ cd klcd
 $ git clone https://github.com/pischky/Linux-Device-Driver-for-Character-LCD-Kernel-Level.git
 $ cd Linux-Device-Driver-for-Character-LCD-Kernel-Level/code/klcd_final/
 $ make
-$ make install
-$ make insmod
+$ sudo make install
+````
+The driver should now load on every boot. Boot now and test:
+````
 $ echo "Hello" >/dev/klcd
 ````
 
-In current version the starting on boot is still missing. Files need to be copied /etc/systemd/ manually. 
-
-<b>Note:</b> The current Makefile makes heavy use of `sudo` not requesting a password. A better version would be
-to use two steps:
-
-````
-$ make
-$ sudo make install
-````
+<b>Note:</b> There are more targets in the Makefile. Read it!
 
 Original Text
 -------------

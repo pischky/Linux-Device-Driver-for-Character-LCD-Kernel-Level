@@ -60,6 +60,9 @@ install:
 	@echo "-- copy 'klcd.conf' to '/etc/modules-load.d/' --"
 	cp klcd.conf /etc/modules-load.d/
 	chmod u+rw,g+r,o+r /etc/modules-load.d/klcd.conf
+	@echo "-- copy 'klcd.rules' to '/etc/udev/rules.d/' --"
+	cp klcd.rules /etc/udev/rules.d/
+	chmod u+rw,g+r,o+r /etc/udev/rules.d/klcd.rules
 
 uninstall:
 	@if [ "$(shell id -u)" != "0" ]; then \
@@ -75,6 +78,10 @@ uninstall:
 	@echo "-- delete 'klcd.conf' from '/etc/modules-load.d/' --"
 	@if [ -f /etc/modules-load.d/klcd.conf ]; then \
 	  rm /etc/modules-load.d/klcd.conf; \
+	fi
+	@echo "-- delete 'klcd.rules' from '/etc/udev/rules.d/' --"
+	@if [ -f /etc/udev/rules.d/klcd.rules ]; then \
+	  rm /etc/udev/rules.d/klcd.rules; \
 	fi
 
 insmod:
