@@ -68,9 +68,21 @@ uninstall:
 	@if [ "$(shell id -u)" != "0" ]; then \
 	  echo "You are not root, run this target as root please!" 2>&1; exit 1; \
 	fi
-	@echo "-- delete 'klcd.ko' from '/lib/modules/`uname -r`/extra/' --"
 	@if [ -r /lib/modules/`uname -r`/extra/klcd.ko ]; then \
+	  echo "-- delete 'klcd.ko' from '/lib/modules/`uname -r`/extra/' --"; \
 	  rm /lib/modules/`uname -r`/extra/klcd.ko; \
+	fi
+	@if [ -r /lib/modules/`uname -r`/extra/klcd.ko.gz ]; then \
+	  echo "-- delete 'klcd.ko.gz' from '/lib/modules/`uname -r`/extra/' --"; \
+	  rm /lib/modules/`uname -r`/extra/klcd.ko.gz; \
+	fi
+	@if [ -r /lib/modules/`uname -r`/extra/klcd.ko.xz ]; then \
+	  echo "-- delete 'klcd.ko.xz' from '/lib/modules/`uname -r`/extra/' --"; \
+	  rm /lib/modules/`uname -r`/extra/klcd.ko.xz; \
+	fi
+	@if [ -r /lib/modules/`uname -r`/extra/klcd.ko.zst ]; then \
+	  echo "-- delete 'klcd.ko.zst' from '/lib/modules/`uname -r`/extra/' --"; \
+	  rm /lib/modules/`uname -r`/extra/klcd.ko.zst; \
 	fi
 	@echo "-- Running depmod using 'Module.symvers'. --"
 	@cd /usr/src/linux-headers-`uname -r`; \
@@ -88,16 +100,28 @@ insmod:
 	@if [ "$(shell id -u)" != "0" ]; then \
 	  echo "You are not root, run this target as root please!" 2>&1; exit 1; \
 	fi
-	@echo "-- load module with 'insmod klcd.ko' and change access --"
-	insmod klcd.ko
+	@if [ -r klcd.ko.zst ]; then \
+	  echo "-- load module with 'insmod klcd.ko.zst' --"; \
+	  insmod klcd.ko.zst; \
+	elif [ -r klcd.ko.gz ]; then \
+	  echo "-- load module with 'insmod klcd.ko.gz' --"; \
+	  insmod klcd.ko.gz; \
+	elif [ -r klcd.ko.xz ]; then \
+	  echo "-- load module with 'insmod klcd.ko.xz' --"; \
+	  insmod klcd.ko.xz; \
+	else \
+	  echo "-- load module with 'insmod klcd.ko' --"; \
+	  insmod klcd.ko; \
+	fi
+	@echo "-- change access --"
 	chmod a+w /dev/klcd
 
 rmmod:
 	@if [ "$(shell id -u)" != "0" ]; then \
 	  echo "You are not root, run this target as root please!" 2>&1; exit 1; \
 	fi
-	@echo "-- unload module with 'rmmod klcd.ko' --"
-	rmmod klcd.ko
+	@echo "-- unload module with 'rmmod klcd' --"
+	rmmod klcd
 
 .PHONY: clean help install insmod rmmod
 
