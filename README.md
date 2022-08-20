@@ -20,6 +20,8 @@ $ cd Linux-Device-Driver-for-Character-LCD-Kernel-Level/code/klcd_final/
 $ make
 $ sudo make install
 ````
+**Note:** If any of the `apt-get`above updates the linux kernel you should do a reboot before proceeding.
+
 The driver should now load on every boot. Boot now and test:
 ````
 $ echo "Hello" >/dev/klcd
